@@ -25,10 +25,20 @@ def pwned_api_check(password):
     first_5_char, rest_of_hash = sha1password[:5], sha1password[5:]
     response = request_api_data(first_5_char)
     leaks_count = get_password_leaks_count(response, rest_of_hash)
-    if leaks_count == 0:
-        print("This password never leaked, you're good to go!")
-    else:
-        print(f'This password leaked {leaks_count} times.')
+    return leaks_count
+    # if leaks_count == 0:
+    #     print("This password never leaked, you're good to go!")
+    # else:
+    #     print(f'This password leaked {leaks_count} times.')
 
 # request_api_data('CDAFE')
-pwned_api_check('admin123')
+# pwned_api_check('admin123')
+
+import PySimpleGUI as sg
+
+password = sg.popup_get_text('Password', password_char='*')
+leaks_count = pwned_api_check(password)
+if leaks_count == 0:
+    sg.popup("This password never leaked, you're good to go!")
+else:
+    sg.popup(f'This password leaked {leaks_count} times.')
